@@ -15,6 +15,7 @@ with st.sidebar:
     
 st.title("ℹ️ About MediMind")
 st.markdown("---")
+email = "kajulurigayatridevi@gmail.com"
 
 # logo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logo.png'))
 
@@ -32,7 +33,7 @@ Whether you're analyzing a radiology report, lab result, or discharge summary, M
 ### 🚀 Key Features
 
 - ✅ **Smart Text Extraction**: Extracts clean text from PDFs, .txt, .data, and .csv files.
-- 📝 **AI Summarization**: Compresses long medical reports into concise summaries using HuggingFace transformers.
+- 📝 **AI Summarization and Local language translation**: Compresses long medical reports into concise summaries using HuggingFace transformers.
 - 💬 **Interactive Q&A**: Ask questions directly about the report using **LangChain** + **Gemini** integration.
 - ⚡ **Responsive UI**: Streamlit interface with a user-friendly sidebar, navigation, and hover effects.
 - 🔐 **Secure**: API keys managed via `.env` for safe and modular development.
@@ -41,7 +42,7 @@ Whether you're analyzing a radiology report, lab result, or discharge summary, M
 
 ### 🧑‍💻 Technologies Used
 
-- **Python 3.10**
+- **Python 3.11**
 - **Streamlit** - Web interface
 - **LangChain** - LLM orchestration
 - **Gemini (Google Generative AI)** - LLM for answering and interpreting medical queries
@@ -67,7 +68,10 @@ This project showcases how modern **AI and NLP** can be practically applied to m
 
 This project is developed as part of an AI Engineering internship by a dedicated student :
 
-- 👩‍💻 **Gayatri Devi Kajuluri** *( AI Developer)*
+- 👩‍💻 **Gayatri Devi Kajuluri** *( AI Developer & Team leader)*
+- 👩‍💻 **Shiva Teja Medoju** *(AI Developer)*
+- 👩‍💻 **Tejaswini Mattaparthi** *(AI Developer)*
+- 👩‍💻 **Shivani Patel Meesala** *(AI Developer)*
 
 
 We are passionate about building AI solutions that **solve meaningful problems** and excited to contribute to the future of medical technology.
@@ -77,5 +81,6 @@ We are passionate about building AI solutions that **solve meaningful problems**
 ### 📫 Contact
 
 Have suggestions or ideas to improve MediMind? Reach out to us or contribute to the future of healthcare AI!
+f"📧 [Email me](mailto:{email})"
 
 """)
