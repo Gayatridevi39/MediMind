@@ -81,6 +81,6 @@ We are passionate about building AI solutions that **solve meaningful problems**
 ### 📫 Contact
 
 Have suggestions or ideas to improve MediMind? Reach out to us or contribute to the future of healthcare AI!
-📧 [Email me](mailto:{email})"
+📧 [Email me](mailto:{email})
 
 """)
