@@ -42,8 +42,7 @@ Doctors and medical professionals often review lengthy and complex patient recor
 
 ## 📸 UI Preview (Optional)
 
-> Include screenshots or a demo video link if available.
-
+![App Screenshot](app/assets/app.png)
 ---
 
 ## 🧑‍💻 How to Run the App Locally
