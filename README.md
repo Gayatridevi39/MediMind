@@ -40,7 +40,7 @@ Doctors and medical professionals often review lengthy and complex patient recor
 
 ---
 
-## 📸 UI Preview (Optional)
+## 📸 UI Preview (Home Page)
 
 ![App Screenshot](app/assets/app.png)
 ---
