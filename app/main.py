@@ -94,7 +94,7 @@ st.markdown("---")
 st.subheader("📤 Upload & Extract Medical Report")
 
 # Upload file
-uploaded_file = st.file_uploader("Upload a medical report", type=['pdf', 'data', 'txt', 'csv'])
+uploaded_file = st.file_uploader("Upload a medical report of type : PDF, CSV, DATA, TXT", type=['pdf', 'data', 'txt', 'csv'])
 
 # Text extraction function
 def extract_text(file_bytes, file_name):
