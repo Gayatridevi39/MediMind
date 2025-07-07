@@ -19,11 +19,8 @@ from langchain.chains import LLMChain
 # Load environment variables
 load_dotenv()
 
-google_api = os.getenv("GEMINI_KEY")
-st.write("GEMINI_KEY")
-
 try:
-    api_key = os.getenv("GEMINI_KEY")
+    api_key = os.getenv("GEMINI_KEY") or st.secrets.get("GEMINI_KEY")
     if not api_key:
         raise ValueError("GEMINI_KEY not found in .env file")
     llm = ChatGoogleGenerativeAI(
