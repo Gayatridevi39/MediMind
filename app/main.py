@@ -8,7 +8,6 @@ from pages import about
 import requests
 from deep_translator import GoogleTranslator
 
-# from transformers import pipeline
 
 
 # LangChain & Gemini
@@ -16,17 +15,21 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
-# Initialize translation pipeline
-# translator = pipeline("translation", model="Helsinki-NLP/opus-mt-en-ROMANCE")
 
 # Load environment variables
 load_dotenv()
 
-# Set up Gemini model via LangChain
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
-    google_api_key=os.getenv("GEMINI_KEY")
-)
+try:
+    api_key = os.getenv("GEMINI_KEY")
+    if not api_key:
+        raise ValueError("GEMINI_KEY not found in .env file")
+    llm = ChatGoogleGenerativeAI(
+              model="gemini-2.0-flash",
+              google_api_key= api_key
+    )
+except Exception as e:
+    st.error(f"Error loading Gemini API: {e}")
+    st.stop()
 
 # Prompt for medical report summarization
 summary_prompt = PromptTemplate(
