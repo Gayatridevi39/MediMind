@@ -19,6 +19,9 @@ from langchain.chains import LLMChain
 # Load environment variables
 load_dotenv()
 
+google_api = os.getenv("GEMINI_KEY")
+st.write("GEMINI_KEY")
+
 try:
     api_key = os.getenv("GEMINI_KEY")
     if not api_key:
