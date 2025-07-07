@@ -11,7 +11,7 @@ An AI-powered Streamlit application that **extracts, summarizes, and interprets*
 - 🧠 **LLM-Powered Summarization** of full medical reports
 - ❓ **Ask Questions** about the report and get intelligent answers
 - 💬 **Google Gemini + LangChain Integration** for contextual responses
-- ⬇️ **Downloadable Summary** feature (optional)
+- ⬇️ **Downloadable Summary** feature 
 - 🧪 **Sample Report Support** for demo/testing
 
 ---
