@@ -114,7 +114,7 @@ def extract_text(file_bytes, file_name):
     
 
     else:
-        return "Unsupported file type."
+        return "!!! Unsupported file type. Please upload a valid file type (PDF, CSV, TXT, DATA)"
 
 
 # Extract text after upload
