@@ -177,10 +177,6 @@ if st.button("Get Report Summary"):
                 st.subheader("📝 AI Summary:")
                 st.write(summary)
                 st.download_button("Download summary", summary) 
-            # st.subheader("📝 AI Summary:")
-            # st.write(summary)
-            # st.session_state["summary"] = summary
-            # st.download_button("Download summary", summary)
     else:
         st.warning("Please upload a file and extract text first.")
         
