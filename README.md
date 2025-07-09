@@ -7,54 +7,87 @@ An AI-powered Streamlit application that **extracts, summarizes, and interprets*
 ## 🚀 Features
 
 - 📄 **Upload Medical Reports** (`.pdf`, `.csv`, `.txt`, `.data`)
-- 🔍 **Automatic Text Extraction** using PyMuPDF & Pandas
-- 🧠 **LLM-Powered Summarization** of full medical reports
-- ❓ **Ask Questions** about the report and get intelligent answers
+- 🔍 **Intelligent Text Extraction** using PyMuPDF & Pandas
+- 🧠 **LLM-Powered Summarization** using LangChain + Gemini
+- ❓ **Interactive Q&A** based on the uploaded report
+- 🌐 **Multilingual summaries** (English, Hindi, Telugu, Spanish, etc.)
+- 🔍 **Search PubMed** for recent research articles on selected conditions
+- ⬇️ Download report summaries in any supported language  
 - 💬 **Google Gemini + LangChain Integration** for contextual responses
-- ⬇️ **Downloadable Summary** feature 
-- 🧪 **Sample Report Support** for demo/testing
-
+- 🧾 Error-handling, session-state memory, and cloud-deployment-ready  
 ---
 
-## 💡 Use Case
+## 💡 Real-World Use Case
 
-Doctors and medical professionals often review lengthy and complex patient records. This tool:
+Doctors, freshers, or patients often struggle to interpret lengthy, jargon-heavy reports. MediMind:
 
-- Summarizes medical reports instantly
-- Answers doctor’s queries contextually
-- Saves time and reduces manual workload
+- Converts raw reports into simple summaries  
+- Answers user-specific questions based only on uploaded documents  
+- Enhances understanding with recent research articles  
+- Saves consultation time and reduces errors in critical evaluations 
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Tech             | Purpose                                |
-|------------------|----------------------------------------|
-| `Streamlit`      | Web interface                          |
-| `LangChain`      | Chain management for LLM interactions  |
-| `Gemini API`     | Google Generative AI (LLM backend)     |
-| `PyMuPDF (fitz)` | Extract text from PDF medical reports  |
-| `pandas`         | Handle CSV and data files              |
-| `transformers`   | Traditional summarization pipeline     |
-| `.env`           | Store Gemini API Key securely          |
+| Tech                | Purpose                                       |
+|---------------------|-----------------------------------------------|
+| `Streamlit`         | Interactive front-end for the AI assistant    |   
+| `LangChain`         | Prompt templates and LLM chaining             |
+| `Gemini API`        |  LLM backend (generative summarization & Q&A) |
+| `PyMuPDF (fitz)`    | Extract text from PDF medical reports         |
+| `pandas`            | Handle CSV and data file parsing              |
+| `Deep Translator`   | Multilingual support for summaries            |
+| `Entrez (NCBI)`     | Fetching medical articles from PubMed         |
+| `.env + st.secrets` | Secure API key management for cloud/local     |
+
+---
+
+## 🌍 Deployment Options
+
+This app is compatible with:
+
+- ✅ Local development  
+- ✅ Streamlit Cloud  
+- ✅ AWS EC2 / GCP VM / Docker-ready environments
 
 ---
 
 ## 📸 UI Preview (Home Page)
 
+### Home Page
 ![App Screenshot](app/assets/app.png)
 ---
 
-## 🧑‍💻 How to Run the App Locally
+## 🧑‍💻 Run the App Locally
 
-1. **Clone the repository**
+### 1. **Clone the repository**
 
 `bash`
 ```
 git clone https://github.com/yourusername/medical-report-summarizer.git
 cd medical-report-summarizer
 ```
+### 2. **Install Requirements**
 
+`bash`
+```
+pip install -r requirements.txt
+```
+### 3. **Add Your Gemini API Key**
+
+Create a `.env` file in the root directory:
+
+`bash`
+```
+GEMINI_KEY=your_gemini_api_key_here
+```
+### 4. **Run the App**
+
+`bash`
+```
+streamlit run app/main.py
+```
 
 ## 🔐 Environment Variables
 
@@ -64,31 +97,34 @@ cd medical-report-summarizer
 
 
 
-## 🤝 Authors
+## 👥 Team
 
-- Gayatri Devi Kajuluri
+- Gayatri Devi Kajuluri - Team Lead, LLM Integration, Q&A, Frontend
 
-- Shiva Teja Medoju
+- Shiva Teja Medoju - Session State, Optimization
 
-- Mattaparthi Tejaswini
+- Mattaparthi Tejaswini – Multilingual Summary Integration
 
-- Meesala Shivani
+- Meesala Shivani – Documentation 
+
+---
+
+## 🌱 Future Enhancements
+
+- 🧬 Visual analytics for lab values & health indicators
+- 🗣️ Voice-based query support for visually impaired users
+- 🧠 Named Entity Recognition for diseases, drugs, symptoms
+- 🏥 Real-time EHR/EMR integration for hospitals
+- 🧾 PDF report summary export with branding
 
 ---
 
 ## 📬 Contact
 
-If you have any questions or suggestions, feel free to reach out at [kajulurigayatridevi@gmail.com].
-
-## ⭐ Future Enhancements
-
-- 🏥 Integration with patient health databases (EHR/EMR)
-- 📊 Visual analytics of patient health indicators
-- 🗣️ Voice-based report Q&A using speech-to-text
-- 🧾 Named Entity Recognition (NER) for extracting medical entities
-
+If you have any questions or suggestions, feel free to reach out at 📧 [kajulurigayatridevi@gmail.com].
+🔗 LinkedIn – [https://www.linkedin.com/in/gayatri-devi-kajuluri/]
 
 ## 📢 Disclaimer
 
-This tool is for educational and research purposes only and is not approved for clinical diagnosis. Use responsibly.
+This app is for educational and research purposes only and is not intended for clinical diagnosis or treatment decisions. Please consult certified medical professionals for medical advice.
 
