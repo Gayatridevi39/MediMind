@@ -158,6 +158,7 @@ if st.button("Generate Answer") and qa:
 
 
 # --- Summarization Section ---
+
 st.markdown("---")
 st.subheader("🧾 Summarize Report")
 
@@ -190,6 +191,7 @@ st.markdown("---")
 # ----- Pubmed Article Search -----
         
 st.subheader("🔍 Find Reasearch Articles about your condition")
+
 query = st.text_input("Enter medical topic or condition", placeholder="e.g. diabetes, cancer, COVID-19")
 options = list(range(1, 11))
 choice = st.selectbox("Pick how many articles to show", options, index=4)
@@ -197,7 +199,7 @@ choice = st.selectbox("Pick how many articles to show", options, index=4)
 # ----Search for related articles ------
 
 @st.cache_data(show_spinner=False)
-def search_pubmed(query, max_results = choice):
+def search_pubmed(query: str, max_results: int):
     try:
         url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
         params = {
@@ -207,15 +209,18 @@ def search_pubmed(query, max_results = choice):
             "retmode" : "json"
         }
         response  = requests.get(url, params=params)
+        response.raise_for_status()
         data = response.json()
-        return data["esearchresult"]["idlist"]
+        return data.get("esearchresult", {}).get("idlist", [])
     except Exception as e:
-        st.error(f"Error fetching PubMed IDs: {e}")
+        st.error(f"❌ Error fetching PubMed IDs: {e}")
         return []
 
 @st.cache_data(show_spinner=False)
 def fetch_articles(pmid_list):
     try:
+        if not pmid_list:
+            return ""
         url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
         ids = ",".join(pmid_list)
         params = {
@@ -224,9 +229,10 @@ def fetch_articles(pmid_list):
             "retmode": "xml"
         }
         response = requests.get(url, params=params)
+        response.raise_for_status()
         return response.text 
     except Exception as e:
-        st.error(f"Error fetching articles: {e}")
+        st.error(f"❌ Error fetching article details: {e}")
         return ""
 
 import xml.etree.ElementTree as ET
@@ -236,32 +242,38 @@ def parse_articles(xml_data):
     try:
         root = ET.fromstring(xml_data)
         for article in root.findall(".//PubmedArticle"):
-            title = article.findtext(".//ArticleTitle")
-            abstract = article.findtext(".//Abstract/AbstractText")
+            title = article.findtext(".//ArticleTitle", default="No title")
+            abstract = article.findtext(".//Abstract/AbstractText", default="No abstract available")
             pmid = article.findtext(".//PMID")
-            url = f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/"
+            url = f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/" if pmid else "#"
             articles.append({
                 "title": title,
                 "abstract": abstract,
                 "url": url
             })
     except Exception as e:
-        st.error(f"Error parsing articles: {e}")
+        st.error(f"❌ Error parsing articles: {e}")
         return articles
 
 
-if st.button("Search Articles") and query:
-    with st.spinner("Searching PubMed...."):
-        pmids = search_pubmed(query)
-        xml_data = fetch_articles(pmids)
-        articles = parse_articles(xml_data)
-        
-        if articles:
-            st.success(f"Found {len(articles)} articles.")
-            for art in articles:
-                st.subheader(art["title"])
-                st.write(art["abstract"])
-                st.markdown(f"[Read on PubMed] ({art['url']})")
-                st.markdown("---")
-        else:
-            st.warning("No articles found for the query.")
+if st.button("Search Articles"):
+    if query.strip():
+        with st.spinner("Searching PubMed...."):
+            pmids = search_pubmed(query, choice)
+            if not pmids:
+                st.warning("⚠️ No results found for the query.")
+            else:
+                xml_data = fetch_articles(pmids)
+                articles = parse_articles(xml_data)
+            
+                if articles:
+                    st.success(f"✅ Found {len(articles)} articles.")
+                    for art in articles:
+                        st.subheader(art["title"])
+                        st.write(art["abstract"])
+                        st.markdown(f"[Read on PubMed] ({art['url']})")
+                        st.markdown("---")
+                else:
+                    st.warning("⚠️ No articles found for the query.")
+    else:
+        st.warning("⚠️ Please enter a valid search term.")
