@@ -121,47 +121,40 @@ uploaded_file = st.file_uploader("Upload a medical report of type : PDF, CSV, DA
 
 
 # Extract text after upload
-if uploaded_file : # and "extracted_text" not in st.session_state:
+if uploaded_file :
     file_bytes = uploaded_file.getvalue()
     extracted = extract_text(file_bytes, uploaded_file.name)
 
-    if extracted.strip(): # and not extracted.stratswith("Error"):
+    if extracted.strip(): 
         st.session_state['extracted_text'] = extracted
         st.success("✅ Text extracted successfully.")
         st.text_area("📄 Raw Extracted Text", value=extracted, height=300)
     else:
         st.error(extracted)
-
-#     if text.strip():
-#         st.session_state['extracted_text'] = text
-#         st.success("✅ Text extracted successfully.")
-#     else:
-#         st.warning("⚠️ No readable text found.")
-
-# # Show extracted text
-# if "extracted_text" in st.session_state:
-#     st.subheader("📄 Raw Extracted Text")
-#     st.text_area("Extracted Text", value=st.session_state['extracted_text'], height=400)
     
 
 
-# --- Q&A Section ---
+# ----- Q&A Section -----
+
 st.markdown("---")
 st.subheader("🧠 AI-Powered Medical Report Q&A")
 
-qa = st.text_input("Enter your question")
+qa = st.text_input("Enter your question about your report")
 
 if st.button("Generate Answer") and qa:
     if "extracted_text" in st.session_state:
-        with st.spinner("Answering using LangChain..."):
-            answer = qa_chain.run(
-                report_text=st.session_state["extracted_text"],
-                question=qa
-            )
-            st.subheader("🔎 Answer:")
-            st.markdown(answer)
+        with st.spinner("Answering..."):
+            try:
+                answer = qa_chain.run(
+                    report_text=st.session_state["extracted_text"],
+                    question=qa
+                )
+                st.subheader("🔎 Answer:")
+                st.markdown(answer)
+            except Exception as e:
+                st.error(f"Failed to generate answer: {e}")
     else:
-        st.warning("Please upload and extract a file first.")
+        st.warning("Please upload and extract a report first.")
 
 
 # --- Summarization Section ---
@@ -173,24 +166,28 @@ selected_language = st.selectbox("Select Output Language", languages)
 
 if st.button("Get Report Summary"):
     if "extracted_text" in st.session_state and st.session_state["extracted_text"].strip():
-        with st.spinner("Generating summary using LangChain..."):
-            summary = summary_chain.run(report_text=st.session_state["extracted_text"])
-            st.session_state["summary"] = summary
-
-            if selected_language != "English":
-               st.subheader(f"📝 Summary in {selected_language}:")
-               translated_summary = GoogleTranslator(source='auto', target=selected_language.lower()).translate(summary)
-               st.write(translated_summary)
-               st.download_button(f"Download summary ({selected_language})", translated_summary)
-            else:
-                st.subheader("📝 AI Summary:")
-                st.write(summary)
-                st.download_button("Download summary", summary) 
+        with st.spinner("Summarizing..."):
+            try:
+                summary = summary_chain.run(report_text=st.session_state["extracted_text"])
+                st.session_state["summary"] = summary
+    
+                if selected_language != "English":
+                   st.subheader(f"📝 Summary in {selected_language}:")
+                   translated_summary = GoogleTranslator(source='auto', target=selected_language.lower()).translate(summary)
+                   st.write(translated_summary)
+                   st.download_button(f"Download summary ({selected_language})", translated_summary)
+                else:
+                    st.subheader("📝 AI Summary:")
+                    st.write(summary)
+                    st.download_button("Download summary", summary) 
+            except Exception as e:
+                st.error(f"Summary generation failed: {e}")
     else:
-        st.warning("Please upload a file and extract text first.")
+        st.warning("Please upload and extract a report first.")
         
 st.markdown("---")        
-        
+
+# ----- Pubmed Article Search -----
         
 st.subheader("🔍 Find Reasearch Articles about your condition")
 query = st.text_input("Enter medical topic or condition", placeholder="e.g. diabetes, cancer, COVID-19")
@@ -198,36 +195,47 @@ options = list(range(1, 11))
 choice = st.selectbox("Pick how many articles to show", options, index=4)
 
 # ----Search for related articles ------
-def search_pubmed(query, max_results = choice):
-    url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
-    params = {
-        "db" : "pubmed",
-        "term" : query,
-        "retmax" : max_results,
-        "retmode" : "json"
-    }
-    response  = requests.get(url, params=params)
-    data = response.json()
-    return data["esearchresult"]["idlist"]
 
+@st.cache_data(show_spinner=False)
+def search_pubmed(query, max_results = choice):
+    try:
+        url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+        params = {
+            "db" : "pubmed",
+            "term" : query,
+            "retmax" : max_results,
+            "retmode" : "json"
+        }
+        response  = requests.get(url, params=params)
+        data = response.json()
+        return data["esearchresult"]["idlist"]
+    except Exception as e:
+        st.error(f"Error fetching PubMed IDs: {e}")
+        return []
+
+@st.cache_data(show_spinner=False)
 def fetch_articles(pmid_list):
-    url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
-    ids = ",".join(pmid_list)
-    params = {
-        "db": "pubmed",
-        "id": ids,
-        "retmode": "xml"
-    }
-    response = requests.get(url, params=params)
-    return response.text  # You'll parse this XML
+    try:
+        url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+        ids = ",".join(pmid_list)
+        params = {
+            "db": "pubmed",
+            "id": ids,
+            "retmode": "xml"
+        }
+        response = requests.get(url, params=params)
+        return response.text 
+    except Exception as e:
+        st.error(f"Error fetching articles: {e}")
+        return ""
 
 import xml.etree.ElementTree as ET
 
 def parse_articles(xml_data):
-    root = ET.fromstring(xml_data)
     articles = []
-    for article in root.findall(".//PubmedArticle"):
-        try:
+    try:
+        root = ET.fromstring(xml_data)
+        for article in root.findall(".//PubmedArticle"):
             title = article.findtext(".//ArticleTitle")
             abstract = article.findtext(".//Abstract/AbstractText")
             pmid = article.findtext(".//PMID")
@@ -237,13 +245,12 @@ def parse_articles(xml_data):
                 "abstract": abstract,
                 "url": url
             })
-        except:
-            continue
-    return articles
+    except Exception as e:
+        st.error(f"Error parsing articles: {e}")
+        return articles
 
 
-
-if st.button("Search"):
+if st.button("Search Articles") and query:
     with st.spinner("Searching PubMed...."):
         pmids = search_pubmed(query)
         xml_data = fetch_articles(pmids)
