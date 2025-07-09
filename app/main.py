@@ -176,7 +176,7 @@ if st.button("Get Report Summary"):
                    st.subheader(f"📝 Summary in {selected_language}:")
                    translated_summary = GoogleTranslator(source='auto', target=selected_language.lower()).translate(summary)
                    st.write(translated_summary)
-                   st.download_button(f"Download summary ({selected_language})", translated_summary)
+                   st.download_button(f"Download summary in {selected_language}", translated_summary)
                 else:
                     st.subheader("📝 AI Summary:")
                     st.write(summary)
