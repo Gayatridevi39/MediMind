@@ -259,12 +259,17 @@ def parse_articles(xml_data):
 if st.button("Search Articles"):
     if query.strip():
         with st.spinner("Searching PubMed...."):
+            st.write("🔍 Search term:", query)
             pmids = search_pubmed(query, choice)
+            st.write("📄 Fetched PMIDs:", pmids)
             if not pmids:
                 st.warning("⚠️ No results found for the query.")
             else:
                 xml_data = fetch_articles(pmids)
+                st.write("📦 Raw XML length:", len(xml_data))
+                
                 articles = parse_articles(xml_data)
+                st.write("📚 Parsed Articles Count:", len(articles))
             
                 if articles:
                     st.success(f"✅ Found {len(articles)} articles.")
