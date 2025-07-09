@@ -96,46 +96,52 @@ st.markdown("A smart AI assistant to help you understand your medical reports in
 st.markdown("---")
 st.subheader("📤 Upload & Extract Medical Report")
 
+# Text extraction function
+@st.cache_data(show_spinner=False)
+def extract_text(file_bytes, file_name):
+    try:
+        if file_name.endswith(".pdf"):
+            doc = fitz.open(stream=file_bytes, filetype="pdf")
+            return "".join([page.get_text() for page in doc])
+        
+        elif file_name.endswith((".txt", ".data")):
+            return file_bytes.decode("utf-8")
+    
+        elif file_name.endswith(".csv"):
+            df = pd.read_csv(io.BytesIO(file_bytes))
+            return df.to_string(index=False)
+        
+        else:
+            return "!!! Unsupported file type. Please upload a valid file type (PDF, CSV, TXT, DATA)"
+    except Exception as e:
+        return f"Error extracting text: {e}"
+
 # Upload file
 uploaded_file = st.file_uploader("Upload a medical report of type : PDF, CSV, DATA, TXT", type=['pdf', 'data', 'txt', 'csv'])
 
-# Text extraction function
-def extract_text(file_bytes, file_name):
-    if file_name.endswith(".pdf"):
-        doc = fitz.open(stream=file_bytes, filetype="pdf")
-        text = ""
-        for page in doc:
-            text += page.get_text()
-        return text
-    
-    elif file_name.endswith((".txt", ".data")):
-        return file_bytes.decode("utf-8")
-
-    elif file_name.endswith(".csv"):
-        df = pd.read_csv(io.BytesIO(file_bytes))
-        return df.to_string(index=False)
-    
-
-    else:
-        return "!!! Unsupported file type. Please upload a valid file type (PDF, CSV, TXT, DATA)"
-
 
 # Extract text after upload
-if uploaded_file and "extracted_text" not in st.session_state:
+if uploaded_file : # and "extracted_text" not in st.session_state:
     file_bytes = uploaded_file.getvalue()
-    file_name = uploaded_file.name
-    text = extract_text(file_bytes, file_name)
+    extracted = extract_text(file_bytes, uploaded_file.name)
 
-    if text.strip():
-        st.session_state['extracted_text'] = text
+    if extracted and not extracted.stratswith("Error"):
+        st.session_state['extracted_text'] = extracted
         st.success("✅ Text extracted successfully.")
+        st.text_area("📄 Raw Extracted Text", value=extracted, height=300)
     else:
-        st.warning("⚠️ No readable text found.")
+        st.error(extracted)
 
-# Show extracted text
-if "extracted_text" in st.session_state:
-    st.subheader("📄 Raw Extracted Text")
-    st.text_area("Extracted Text", value=st.session_state['extracted_text'], height=400)
+#     if text.strip():
+#         st.session_state['extracted_text'] = text
+#         st.success("✅ Text extracted successfully.")
+#     else:
+#         st.warning("⚠️ No readable text found.")
+
+# # Show extracted text
+# if "extracted_text" in st.session_state:
+#     st.subheader("📄 Raw Extracted Text")
+#     st.text_area("Extracted Text", value=st.session_state['extracted_text'], height=400)
     
 
 
