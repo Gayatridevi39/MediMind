@@ -253,7 +253,7 @@ def parse_articles(xml_data):
             })
     except Exception as e:
         st.error(f"❌ Error parsing articles: {e}")
-        return articles
+    return articles
 
 
 if st.button("Search Articles"):
