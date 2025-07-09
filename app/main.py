@@ -125,7 +125,7 @@ if uploaded_file : # and "extracted_text" not in st.session_state:
     file_bytes = uploaded_file.getvalue()
     extracted = extract_text(file_bytes, uploaded_file.name)
 
-    if extracted and not extracted.stratswith("Error"):
+    if extracted.strip(): # and not extracted.stratswith("Error"):
         st.session_state['extracted_text'] = extracted
         st.success("✅ Text extracted successfully.")
         st.text_area("📄 Raw Extracted Text", value=extracted, height=300)
