@@ -121,8 +121,8 @@ streamlit run app/main.py
 
 ## 📬 Contact
 
-If you have any questions or suggestions, feel free to reach out at 📧 [kajulurigayatridevi@gmail.com].
-🔗 LinkedIn – [https://www.linkedin.com/in/gayatri-devi-kajuluri/]
+If you have any questions or suggestions, feel free to reach out at 📧 [kajulurigayatridevi@gmail.com](mailto:kajulurigayatridevi@gmail.com)
+🔗 [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
 
 ## 📢 Disclaimer
 
