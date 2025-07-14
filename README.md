@@ -68,7 +68,7 @@ This app is compatible with:
 git clone https://github.com/Gayatridevi39/MediMind.git
 cd MediMind
 ```
-### 2. **Install Requirements**
+### 2. **Create & Activate Virtual Environment**
 
 `bash`
 ```
@@ -82,11 +82,15 @@ venv\Scripts\activate
 
 # For macOS/Linux:
 source venv/bin/activate
+```
 
-# Then install dependencies
+### 3.Install dependencies
+`bash`
+```
 pip install -r requirements.txt
 ```
-### 3. **Add Your Gemini API Key**
+
+### 4. **Add Your Gemini API Key**
 
 Create a `.env` file in the root directory:
 
@@ -94,7 +98,7 @@ Create a `.env` file in the root directory:
 ```
 GEMINI_KEY="your_gemini_api_key_here" 
 ```
-### 4. **Run the App**
+### 5. **Run the App**
 
 `bash`
 ```
