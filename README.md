@@ -65,8 +65,8 @@ This app is compatible with:
 
 `bash`
 ```
-git clone https://github.com/yourusername/medical-report-summarizer.git
-cd medical-report-summarizer
+git clone https://github.com/Gayatridevi39/MediMind.git
+cd MediMind
 ```
 ### 2. **Install Requirements**
 
