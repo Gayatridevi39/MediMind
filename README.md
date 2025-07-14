@@ -7,7 +7,7 @@ A Streamlit-based AI tool that extracts, summarizes, and interprets medical repo
 ## 🚀 Features
 
 - 📄 **Upload Medical Reports** (`.pdf`, `.csv`, `.txt`, `.data`)
-- 🔍 **Intelligent Text Extraction** using PyMuPDF & Pandas
+- 🔍 **Intelligent Text Extraction** using fitz & Pandas
 - 🧠 **LLM-Powered Summarization** using LangChain + Gemini
 - ❓ **Interactive Q&A** based on the uploaded report
 - 🌐 **Multilingual summaries** (English, Hindi, Telugu, Spanish, etc.)
@@ -113,11 +113,10 @@ streamlit run app/main.py
 
 - Gayatri Devi Kajuluri - Team Lead, LLM Integration, Q&A, Frontend
 
-- Shiva Teja Medoju - Session State, Optimization
+- Shiva Teja Medoju - Session State
 
-- Mattaparthi Tejaswini – Multilingual Summary Integration
+- Mattaparthi Tejaswini – Multilingual Summary Translation
 
-- Meesala Shivani – Documentation 
 
 ---
 
