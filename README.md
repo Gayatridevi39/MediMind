@@ -76,8 +76,10 @@ cd MediMind
 python -m venv venv
 
 # Activate the virtual environment
+
 # For Windows:
 venv\Scripts\activate
+
 # For macOS/Linux:
 source venv/bin/activate
 
@@ -90,7 +92,7 @@ Create a `.env` file in the root directory:
 
 `bash`
 ```
-echo "GEMINI_KEY=your_gemini_api_key_here" > .env
+GEMINI_KEY="your_gemini_api_key_here" 
 ```
 ### 4. **Run the App**
 
