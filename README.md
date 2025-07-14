@@ -1,6 +1,6 @@
-# 🩺 Medical Report Summarizer & Interpreter
+# 🩺 MediMind: AI-Powered Medical Report Summarizer
 
-An AI-powered Streamlit application that **extracts, summarizes, and interprets** medical reports using **LangChain** and **Gemini (Google Generative AI)**. Designed to assist doctors, healthcare analysts, and researchers in understanding patient records efficiently.
+A Streamlit-based AI tool that extracts, summarizes, and interprets medical reports using LangChain and Gemini (Google Generative AI). Built for doctors, analysts, and patients to understand medical records effortlessly.
 
 ---
 
@@ -12,7 +12,7 @@ An AI-powered Streamlit application that **extracts, summarizes, and interprets*
 - ❓ **Interactive Q&A** based on the uploaded report
 - 🌐 **Multilingual summaries** (English, Hindi, Telugu, Spanish, etc.)
 - 🔍 **Search PubMed** for recent research articles on selected conditions
-- ⬇️ Download report summaries in any supported language  
+- ⬇️ Export summaries in multiple languages (text)  
 - 💬 **Google Gemini + LangChain Integration** for contextual responses
 - 🧾 Error-handling, session-state memory, and cloud-deployment-ready  
 ---
@@ -34,12 +34,12 @@ Doctors, freshers, or patients often struggle to interpret lengthy, jargon-heavy
 |---------------------|-----------------------------------------------|
 | `Streamlit`         | Interactive front-end for the AI assistant    |   
 | `LangChain`         | Prompt templates and LLM chaining             |
-| `Gemini API`        |  LLM backend (generative summarization & Q&A) |
-| `PyMuPDF (fitz)`    | Extract text from PDF medical reports         |
+| `Gemini API`        | Generative summarization and Q&A              |
+| `fitz`              | Extract text from PDF medical reports         |
 | `pandas`            | Handle CSV and data file parsing              |
-| `Deep Translator`   | Multilingual support for summaries            |
-| `Entrez (NCBI)`     | Fetching medical articles from PubMed         |
-| `.env + st.secrets` | Secure API key management for cloud/local     |
+| `Deep Translator`   | Translate summaries into multiple languages   |
+| `Entrez (NCBI)`     | Search and fetch articles from PubMed         |
+| `.env + st.secrets` | Secure local/cloud API key management         |
 
 ---
 
@@ -72,6 +72,16 @@ cd MediMind
 
 `bash`
 ```
+# Create virtual environment (replace 'venv' with your desired name)
+python -m venv venv
+
+# Activate the virtual environment
+# For Windows:
+venv\Scripts\activate
+# For macOS/Linux:
+source venv/bin/activate
+
+# Then install dependencies
 pip install -r requirements.txt
 ```
 ### 3. **Add Your Gemini API Key**
@@ -80,7 +90,7 @@ Create a `.env` file in the root directory:
 
 `bash`
 ```
-GEMINI_KEY=your_gemini_api_key_here
+echo "GEMINI_KEY=your_gemini_api_key_here" > .env
 ```
 ### 4. **Run the App**
 
