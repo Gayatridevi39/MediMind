@@ -1,40 +1,36 @@
 import streamlit as st
-import fitz  
-from dotenv import load_dotenv
-import pandas as pd
 import os
 import io
-from pages import about
-import requests
-from deep_translator import GoogleTranslator
+from dotenv import load_dotenv
 
-
-
-# LangChain & Gemini
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain
-
-
-# Load environment variables
+# Load environment variables early
 load_dotenv()
 
-try:
-    api_key = os.getenv("GEMINI_KEY") or st.secrets.get("GEMINI_KEY")
-    if not api_key:
-        raise ValueError("GEMINI_KEY not found in .env file")
-    llm = ChatGoogleGenerativeAI(
-              model="gemini-2.0-flash",
-              google_api_key= api_key
-    )
-except Exception as e:
-    st.error(f"Error loading Gemini API: {e}")
-    st.stop()
+# Basic imports for UI
+from pages import about
 
-# Prompt for medical report summarization
-summary_prompt = PromptTemplate(
-    input_variables=["report_text"],
-    template="""
+# Lazy import functions for heavy dependencies
+@st.cache_resource
+def get_llm():
+    """Lazy load LangChain and Gemini components"""
+    try:
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        from langchain.prompts import PromptTemplate
+        from langchain.chains import LLMChain
+        
+        api_key = os.getenv("GEMINI_KEY") or st.secrets.get("GEMINI_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_KEY not found in .env file")
+        
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-2.0-flash",
+            google_api_key=api_key
+        )
+        
+        # Prompt templates
+        summary_prompt = PromptTemplate(
+            input_variables=["report_text"],
+            template="""
 You are a medical AI expert. Summarize the following medical report clearly and concisely for a doctor:
 
 Medical Report:
@@ -42,13 +38,11 @@ Medical Report:
 
 Summary:
 """
-)
-summary_chain = LLMChain(llm=llm, prompt=summary_prompt)
-
-# Prompt for medical Q&A
-qa_prompt = PromptTemplate(
-    input_variables=["report_text", "question"],
-    template="""
+        )
+        
+        qa_prompt = PromptTemplate(
+            input_variables=["report_text", "question"],
+            template="""
 You are a medical expert AI. Based only on the given medical report, answer the question accurately.
 
 Medical Report:
@@ -58,11 +52,28 @@ Question: {question}
 
 Answer:
 """
-)
-qa_chain = LLMChain(llm=llm, prompt=qa_prompt)
+        )
+        
+        summary_chain = LLMChain(llm=llm, prompt=summary_prompt)
+        qa_chain = LLMChain(llm=llm, prompt=qa_prompt)
+        
+        return summary_chain, qa_chain
+    except Exception as e:
+        st.error(f"Error loading Gemini API: {e}")
+        st.stop()
 
+@st.cache_resource
+def get_text_processors():
+    """Lazy load text processing dependencies"""
+    import fitz
+    import pandas as pd
+    return fitz, pd
 
-
+@st.cache_resource
+def get_translator():
+    """Lazy load translation functionality"""
+    from deep_translator import GoogleTranslator
+    return GoogleTranslator
 
 # ---------------- Streamlit App ---------------- #
 
@@ -80,15 +91,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
 st.logo("app/assets/logo.png", size="large")
 with st.sidebar:
     st.sidebar.title("📋 Menu")
     st.page_link("main.py", label="Home", icon="🏠")
     st.page_link("pages/about.py", label="About", icon="ℹ️")
     st.page_link("https://www.google.co.in/", label="Google", icon="🌎")
-    
-
 
 st.title("🩺 Medical Report Summarizer & Interpreter")
 st.markdown("A smart AI assistant to help you understand your medical reports in simple language.")
@@ -96,13 +104,20 @@ st.markdown("A smart AI assistant to help you understand your medical reports in
 st.markdown("---")
 st.subheader("📤 Upload & Extract Medical Report")
 
-# Text extraction function
-@st.cache_data(show_spinner=False)
+# Text extraction function with optimized caching
+@st.cache_data(show_spinner=False, max_entries=10)
 def extract_text(file_bytes, file_name):
+    """Extract text from uploaded files with improved error handling and caching"""
     try:
+        fitz, pd = get_text_processors()
+        
         if file_name.endswith(".pdf"):
             doc = fitz.open(stream=file_bytes, filetype="pdf")
-            return "".join([page.get_text() for page in doc])
+            text = ""
+            for page in doc:
+                text += page.get_text()
+            doc.close()  # Explicit cleanup
+            return text
         
         elif file_name.endswith((".txt", ".data")):
             return file_bytes.decode("utf-8")
@@ -119,20 +134,17 @@ def extract_text(file_bytes, file_name):
 # Upload file
 uploaded_file = st.file_uploader("Upload a medical report of type : PDF, CSV, DATA, TXT", type=['pdf', 'data', 'txt', 'csv'])
 
-
 # Extract text after upload
-if uploaded_file :
+if uploaded_file:
     file_bytes = uploaded_file.getvalue()
     extracted = extract_text(file_bytes, uploaded_file.name)
 
-    if extracted.strip(): 
+    if extracted.strip() and not extracted.startswith("Error") and not extracted.startswith("!!!"):
         st.session_state['extracted_text'] = extracted
         st.success("✅ Text extracted successfully.")
         st.text_area("📄 Raw Extracted Text", value=extracted, height=300)
     else:
         st.error(extracted)
-    
-
 
 # ----- Q&A Section -----
 
@@ -145,6 +157,7 @@ if st.button("Generate Answer") and qa:
     if "extracted_text" in st.session_state:
         with st.spinner("Answering..."):
             try:
+                summary_chain, qa_chain = get_llm()
                 answer = qa_chain.run(
                     report_text=st.session_state["extracted_text"],
                     question=qa
@@ -155,7 +168,6 @@ if st.button("Generate Answer") and qa:
                 st.error(f"Failed to generate answer: {e}")
     else:
         st.warning("Please upload and extract a report first.")
-
 
 # --- Summarization Section ---
 
@@ -169,11 +181,13 @@ if st.button("Get Report Summary"):
     if "extracted_text" in st.session_state and st.session_state["extracted_text"].strip():
         with st.spinner("Summarizing..."):
             try:
+                summary_chain, qa_chain = get_llm()
                 summary = summary_chain.run(report_text=st.session_state["extracted_text"])
                 st.session_state["summary"] = summary
     
                 if selected_language != "English":
                    st.subheader(f"📝 Summary in {selected_language}:")
+                   GoogleTranslator = get_translator()
                    translated_summary = GoogleTranslator(source='auto', target=selected_language.lower()).translate(summary)
                    st.write(translated_summary)
                    st.download_button(f"Download summary in {selected_language}", translated_summary)
@@ -190,25 +204,27 @@ st.markdown("---")
 
 # ----- Pubmed Article Search -----
         
-st.subheader("🔍 Find Reasearch Articles about your condition")
+st.subheader("🔍 Find Research Articles about your condition")
 
 query = st.text_input("Enter medical topic or condition", placeholder="e.g. diabetes, cancer, COVID-19")
 options = list(range(1, 11))
 choice = st.selectbox("Pick how many articles to show", options, index=4)
 
-# ----Search for related articles ------
+# ----Search for related articles with improved caching------
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, ttl=3600)  # Cache for 1 hour
 def search_pubmed(query: str, max_results: int):
+    """Search PubMed with improved caching and error handling"""
     try:
+        import requests
         url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
         params = {
-            "db" : "pubmed",
-            "term" : query,
-            "retmax" : max_results,
-            "retmode" : "json"
+            "db": "pubmed",
+            "term": query,
+            "retmax": max_results,
+            "retmode": "json"
         }
-        response  = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()
         data = response.json()
         return data.get("esearchresult", {}).get("idlist", [])
@@ -216,9 +232,11 @@ def search_pubmed(query: str, max_results: int):
         st.error(f"❌ Error fetching PubMed IDs: {e}")
         return []
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, ttl=3600)  # Cache for 1 hour
 def fetch_articles(pmid_list):
+    """Fetch article details with improved caching"""
     try:
+        import requests
         if not pmid_list:
             return ""
         url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
@@ -228,16 +246,16 @@ def fetch_articles(pmid_list):
             "id": ids,
             "retmode": "xml"
         }
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=15)
         response.raise_for_status()
         return response.text 
     except Exception as e:
         st.error(f"❌ Error fetching article details: {e}")
         return ""
 
-import xml.etree.ElementTree as ET
-
 def parse_articles(xml_data):
+    """Parse XML article data with improved error handling"""
+    import xml.etree.ElementTree as ET
     articles = []
     try:
         root = ET.fromstring(xml_data)
@@ -255,10 +273,9 @@ def parse_articles(xml_data):
         st.error(f"❌ Error parsing articles: {e}")
     return articles
 
-
 if st.button("Search Articles"):
     if query.strip():
-        with st.spinner("Searching PubMed...."):
+        with st.spinner("Searching PubMed..."):
             st.write("🔍 Search term:", query)
             pmids = search_pubmed(query, choice)
             if not pmids:
@@ -273,7 +290,7 @@ if st.button("Search Articles"):
                     for art in articles:
                         st.subheader(art["title"])
                         st.write(art["abstract"])
-                        st.markdown(f"[Read on PubMed] ({art['url']})")
+                        st.markdown(f"[Read on PubMed]({art['url']})")
                         st.markdown("---")
                 else:
                     st.warning("⚠️ No articles found for the query.")
