@@ -1,3 +1,31 @@
+[server]
+# Enable compression for faster load times
+enableCORS = false
+enableXsrfProtection = false
 
+# Memory optimization
+maxUploadSize = 50
+maxMessageSize = 50
+
+[browser]
+# Reduce browser overhead
+gatherUsageStats = false
+showErrorDetails = false
+
+[runner]
+# Optimize performance
+magicEnabled = false
+installTracer = false
+fixMatplotlib = false
+
+[theme]
+# Performance-focused theme
+primaryColor = "#1f77b4"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f2f6"
+textColor = "#262730"
+
+[client]
+# Optimize client performance
 toolbarMode = "auto"
-showSidebarNavigation = False
+showSidebarNavigation = false
