@@ -134,10 +134,13 @@ def render_header():
             else:
                 st.info("No performance data yet")
     
+render_header()
+
+head_right, head_middle, head_left = st.columns([1,2,1])
+with head_middle:
     st.title("🩺 Medical Report Summarizer & Interpreter")
     st.markdown("A smart AI assistant to help you understand your medical reports in simple language.")
 
-render_header()
 
 # Memory optimization - clear cache periodically
 if 'cache_clear_counter' not in st.session_state:
