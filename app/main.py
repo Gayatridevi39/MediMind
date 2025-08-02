@@ -226,14 +226,14 @@ with right_col:
     def generate_answer(question, report_text):
         """Generate answer with performance monitoring"""
         summary_chain, qa_chain = get_llm()
-        return qa_chain.invoke(report_text=report_text, question=question)
+        return qa_chain.invoke({"report_text" : st.session_state["extracted_text"],
+                        "question" : qa})
     
     if st.button("Generate Answer", type="primary") and qa:
         if "extracted_text" in st.session_state:
             with st.spinner("🧠 Analyzing and answering..."):
                 try:
-                    answer_result = generate_answer({"report_text" : st.session_state["extracted_text"],
-                            "question" : qa})
+                    answer_result = generate_answer(qa, st.session_state["extracted_text"])
                     answer = answer_result.content
                     st.subheader("🔎 Answer:")
                     st.markdown(answer)
