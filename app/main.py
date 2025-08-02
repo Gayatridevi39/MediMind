@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import io
 from dotenv import load_dotenv
+from streamlit_star_rating import st_star_rating
 
 # Load environment variables early
 load_dotenv()
@@ -411,4 +412,8 @@ if st.button("Search Articles", type="primary"):
 
 # Footer with performance info
 st.markdown("---")
-st.caption("🚀 Optimized for performance • Memory usage monitored • Cache enabled")
+st.markdown("Your opinion matters! Help us enhance your journey")
+rating = st_star_rating("", maxValue=5, defaultValue=0, key="rating4", emoticons=True, resetButton=True)
+
+if rating:
+    st.caption("Thankyou for your valuable feedback! It helps us grow.")
