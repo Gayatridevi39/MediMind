@@ -412,8 +412,8 @@ if st.button("Search Articles", type="primary"):
 
 # Footer with performance info
 st.markdown("---")
-st.markdown("Your opinion matters! Help us enhance your journey")
+st.markdown("### Your opinion matters! Help us enhance your journey")
 rating = st_star_rating("", maxValue=5, defaultValue=0, key="rating4", emoticons=True, resetButton=True)
 
 if rating:
-    st.caption("Thankyou for your valuable feedback! It helps us grow.")
+    st.markdown("Thankyou for your valuable feedback! It helps us grow.")
