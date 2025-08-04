@@ -1,145 +1,128 @@
-# 🩺 MediMind: AI-Powered Medical Report Summarizer
+# 🩺 Medical Report Summarizer & Interpreter
 
-A Streamlit-based AI tool that extracts, summarizes, and interprets medical reports using LangChain and Gemini (Google Generative AI). Built for doctors, analysts, and patients to understand medical records effortlessly.
+> **AI-powered medical assistant** that simplifies complex medical reports, answers health-related questions, and finds relevant research — all with performance-optimized architecture and multilingual support.
 
----
-
-## 🚀 Features
-
-- 📄 **Upload Medical Reports** (`.pdf`, `.csv`, `.txt`, `.data`)
-- 🔍 **Intelligent Text Extraction** using fitz & Pandas
-- 🧠 **LLM-Powered Summarization** using LangChain + Gemini
-- ❓ **Interactive Q&A** based on the uploaded report
-- 🌐 **Multilingual summaries** (English, Hindi, Telugu, Spanish, etc.)
-- 🔍 **Search PubMed** for recent research articles on selected conditions
-- ⬇️ Export summaries in multiple languages (text)  
-- 💬 **Google Gemini + LangChain Integration** for contextual responses
-- 🧾 Error-handling, session-state memory, and cloud-deployment-ready  
----
-
-## 💡 Real-World Use Case
-
-Doctors, freshers, or patients often struggle to interpret lengthy, jargon-heavy reports. MediMind:
-
-- Converts raw reports into simple summaries  
-- Answers user-specific questions based only on uploaded documents  
-- Enhances understanding with recent research articles  
-- Saves consultation time and reduces errors in critical evaluations 
+![App Logo](app/assets/logo.png)
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Overview
 
-| Tech                | Purpose                                       |
-|---------------------|-----------------------------------------------|
-| `Streamlit`         | Interactive front-end for the AI assistant    |   
-| `LangChain`         | Prompt templates and LLM chaining             |
-| `Gemini API`        | Generative summarization and Q&A              |
-| `fitz`              | Extract text from PDF medical reports         |
-| `pandas`            | Handle CSV and data file parsing              |
-| `Deep Translator`   | Translate summaries into multiple languages   |
-| `Entrez (NCBI)`     | Search and fetch articles from PubMed         |
-| `.env + st.secrets` | Secure local/cloud API key management         |
+**Medical Report Summarizer & Interpreter** is an advanced AI assistant built using **Streamlit**, **LangChain**, and **Gemini AI**, designed to:
 
----
+- Extract text from various medical report formats.
+- Summarize reports in human-friendly, concise language.
+- Translate summaries into multiple languages.
+- Answer user questions based on uploaded reports.
+- Search for relevant PubMed research articles.
+- Monitor app performance in real-time.
 
-## 🌍 Deployment Options
-
-This app is compatible with:
-
-- ✅ Local development  
-- ✅ Streamlit Cloud  
-- ✅ AWS EC2 / GCP VM / Docker-ready environments
+This project showcases scalable AI integration, optimized resource management, and accessible healthcare communication.
 
 ---
 
-## 📸 UI Preview (Home Page)
+## 🧠 Key Features
 
-### Home Page
-![App Screenshot](app/assets/app.png)
+### ✅ Report Upload & Text Extraction
+- Uploads files in PDF, TXT, CSV, or custom DATA formats.
+- Uses a performance-optimized `CacheOptimizer` for extraction.
+- Garbage collection for large files to reduce memory overhead.
+
+### 📝 Smart Summarization
+- AI generates 4-line medical report summaries using **Gemini 2.0 Flash** via LangChain.
+- Summaries are tailored for non-medical users and professionals alike.
+- Supports **auto-translation** to 7+ languages (e.g., Hindi, Telugu, French, German).
+
+### ❓ Medical Q&A Assistant
+- Users can ask questions directly about their report.
+- Answers are context-aware, AI-generated, and backed by the extracted content.
+- Conversational tone with high accuracy, built for both laypeople and experts.
+
+### 🔍 PubMed Research Search
+- Users can search for related academic papers by condition/topic.
+- Fetches and parses XML abstracts from PubMed APIs.
+- Displays top articles with titles, abstracts, and links for in-depth reading.
+
+### ⚡ Performance Monitoring
+- Real-time performance tracking using custom decorators.
+- Measures execution time for text extraction, summarization, Q&A, and search.
+- Optional memory optimization through periodic cache clearing.
+
+### 🌐 Multilingual Support
+- Choose from English, Hindi, Telugu, Spanish, French, German, or Chinese.
+- Uses Deep Translator with Google API for real-time translation.
+
+### ⭐ User Feedback
+- Built-in star rating system to gather user feedback.
+- Sentiment-based UI prompts to improve user experience.
+
 ---
 
-## 🧑‍💻 Run the App Locally
+## 🧩 Tech Stack
 
-### 1. **Clone the repository**
+| Layer            | Tools Used                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| Frontend         | [Streamlit](https://streamlit.io)                                           |
+| AI/LLM           | [LangChain](https://www.langchain.com/), Gemini (via `langchain_google_genai`) |
+| Translation      | [Deep Translator](https://pypi.org/project/deep-translator/)                |
+| Research API     | [PubMed eUtils](https://www.ncbi.nlm.nih.gov/books/NBK25501/)               |
+| Performance      | Custom decorators, `gc`, `@st.cache_*` methods                             |
+| Environment Mgmt | `.env`, [python-dotenv](https://pypi.org/project/python-dotenv/)           |
 
-`bash`
+---
+
+## ⚙️ How to Run Locally
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/MediMind.git
+cd Medimind
 ```
-git clone https://github.com/Gayatridevi39/MediMind.git
-cd MediMind
-```
-### 2. **Create & Activate Virtual Environment**
 
-`bash`
-```
-# Create virtual environment (replace 'venv' with your desired name)
+### 2. Set Up Environment
+```bash
 python -m venv venv
-
-# Activate the virtual environment
-
-# For Windows:
-venv\Scripts\activate
-
-# For macOS/Linux:
-source venv/bin/activate
-```
-
-### 3.Install dependencies
-`bash`
-```
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
 ```
 
-### 4. **Add Your Gemini API Key**
-
-Create a `.env` file in the root directory:
-
-`bash`
+Create a `.env` file:
 ```
-GEMINI_KEY="your_gemini_api_key_here" 
+GEMINI_KEY=your_gemini_api_key_here
 ```
-### 5. **Run the App**
 
-`bash`
-```
+### 3. Run the App
+```bash
 streamlit run app/main.py
 ```
 
-## 🔐 Environment Variables
+---
 
-| Variable     | Description                       |
-| ------------ | --------------------------------- |
-| `GEMINI_KEY` | Your Google Generative AI API Key |
+## 🧪 Sample Use Cases
 
-
-
-## 👥 Team
-
-- Gayatri Devi Kajuluri - Team Lead, LLM Integration, Q&A, Frontend
-
-- Shiva Teja Medoju - Session State
-
-- Mattaparthi Tejaswini – Multilingual Summary Translation
-
+- 📄 Summarizing long pathology reports into simple terms.
+- ❓ Asking “What does this blood test mean?” and getting context-aware answers.
+- 🌐 Exploring academic research for recently diagnosed conditions.
+- 🌍 Translating medical findings for multilingual family members.
 
 ---
 
-## 🌱 Future Enhancements
+## 🌟 Recognition-Ready Engineering Highlights
 
-- 🧬 Visual analytics for lab values & health indicators
-- 🗣️ Voice-based query support for visually impaired users
-- 🧠 Named Entity Recognition for diseases, drugs, symptoms
-- 🏥 Real-time EHR/EMR integration for hospitals
-- 🧾 PDF report summary export with branding
+- ✅ **LLM Integration**: Gemini 2.0 Flash via LangChain with dynamic prompt templates.
+- 🧠 **Modular AI Chains**: Separate summary and Q&A chains for clarity and reusability.
+- 🧰 **Performance First**: Smart caching, session-based garbage collection, and execution profiling.
+- 🔍 **Real-world NLP**: PDF parsing, text extraction, language translation, and scientific search.
+- 🎯 **Recruiter-Friendly Stack**: Practical application of AI + UX + APIs in a deployable Streamlit app.
 
 ---
 
-## 📬 Contact
+## 📬 Feedback & Contributions
 
-If you have any questions or suggestions, feel free to reach out at 📧 [kajulurigayatridevi@gmail.com](mailto:kajulurigayatridevi@gmail.com)
-🔗 [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
+Your feedback is valued. Contributions, bug reports, or feature ideas are welcome via:
 
-## 📢 Disclaimer
+- GitHub Issues & Pull Requests
+- Email: [kajulurigayatridevi@gmail.com](kajulurigayatridevi@gmail.com)
+- [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
 
-This app is for educational and research purposes only and is not intended for clinical diagnosis or treatment decisions. Please consult certified medical professionals for medical advice.
 
