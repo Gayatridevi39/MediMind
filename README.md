@@ -2,7 +2,7 @@
 
 > **AI-powered medical assistant** that simplifies complex medical reports, answers health-related questions, and finds relevant research — all with performance-optimized architecture and multilingual support.
 
-![App Logo](app/assets/logo.png)
+![App Logo](app/assets/Main_page.png)
 
 ---
 
@@ -124,6 +124,7 @@ Your feedback is valued. Contributions, bug reports, or feature ideas are welcom
 - GitHub Issues & Pull Requests
 - Email: [kajulurigayatridevi@gmail.com](kajulurigayatridevi@gmail.com)
 - [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
+
 
 
 
