@@ -75,8 +75,8 @@ This project showcases scalable AI integration, optimized resource management, a
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/MediMind.git
-cd Medimind
+https://github.com/Gayatridevi39/MediMind.git
+cd MediMind
 ```
 
 ### 2. Set Up Environment
@@ -124,5 +124,6 @@ Your feedback is valued. Contributions, bug reports, or feature ideas are welcom
 - GitHub Issues & Pull Requests
 - Email: [kajulurigayatridevi@gmail.com](kajulurigayatridevi@gmail.com)
 - [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
+
 
 
