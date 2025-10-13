@@ -1,9 +1,20 @@
-# 🩺 Medical Report Summarizer & Interpreter
+# 🩺 MediMind: Turning Complex Medical Reports into Clear, Human Language
+> An AI-powered assistant that transforms medical reports into clarity, insight, and understanding.
 
-> **AI-powered medical assistant** that simplifies complex medical reports, answers health-related questions, and finds relevant research — all with performance-optimized architecture and multilingual support.
+Imagine receiving a medical report — pages filled with numbers, terms, and jargon that only a specialist can decode.
+Now imagine an AI assistant that reads it for you, simplifies it, answers your questions, and even finds the latest research behind your results.
+
+That’s what MediMind does. 
+
+Built with LangChain, Gemini AI, and Streamlit, MediMind bridges the gap between medical complexity and human understanding.
+It’s not just a project — it’s a step toward accessible healthcare communication powered by responsible AI.
 
 ![App Logo](app/assets/Main_page.png)
 
+---
+## 💡 Vision
+MediMind was born from a simple idea: medical data should empower, not confuse.  
+It combines AI and human empathy to make healthcare information accessible to everyone.
 ---
 
 ## 🚀 Overview
@@ -19,9 +30,10 @@
 
 This project showcases scalable AI integration, optimized resource management, and accessible healthcare communication.
 
+🔗 **Try MediMind Live:** [Live Demo](https://medimind-mkxu8abkanlfj6czyerb7t.streamlit.app/)
 ---
 
-## 🧠 Key Features
+## 🌟 What MediMind Can Do
 
 ### ✅ Report Upload & Text Extraction
 - Uploads files in PDF, TXT, CSV, or custom DATA formats.
@@ -116,7 +128,10 @@ streamlit run app/main.py
 - 🎯 **Recruiter-Friendly Stack**: Practical application of AI + UX + APIs in a deployable Streamlit app.
 
 ---
+### 🧩 Explore MediMind
+👉 [Try the Live App](https://medimind-mkxu8abkanlfj6czyerb7t.streamlit.app/)
 
+---
 ## 📬 Feedback & Contributions
 
 Your feedback is valued. Contributions, bug reports, or feature ideas are welcome via:
@@ -124,6 +139,7 @@ Your feedback is valued. Contributions, bug reports, or feature ideas are welcom
 - GitHub Issues & Pull Requests
 - Email: [kajulurigayatridevi@gmail.com](kajulurigayatridevi@gmail.com)
 - [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
+
 
 
 
