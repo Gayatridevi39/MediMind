@@ -13,8 +13,10 @@ It’s not just a project — it’s a step toward accessible healthcare communi
 
 ---
 ## 💡 Vision
+
 MediMind was born from a simple idea: medical data should empower, not confuse.  
 It combines AI and human empathy to make healthcare information accessible to everyone.
+
 ---
 
 ## 🚀 Overview
@@ -30,7 +32,7 @@ It combines AI and human empathy to make healthcare information accessible to ev
 
 This project showcases scalable AI integration, optimized resource management, and accessible healthcare communication.
 
-🔗 **Try MediMind Live:** [Live Demo](https://medimind-mkxu8abkanlfj6czyerb7t.streamlit.app/)
+🔗Try MediMind Live: [Live Demo](https://medimind-mkxu8abkanlfj6czyerb7t.streamlit.app/)
 ---
 
 ## 🌟 What MediMind Can Do
@@ -139,6 +141,7 @@ Your feedback is valued. Contributions, bug reports, or feature ideas are welcom
 - GitHub Issues & Pull Requests
 - Email: [kajulurigayatridevi@gmail.com](kajulurigayatridevi@gmail.com)
 - [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
+
 
 
 
