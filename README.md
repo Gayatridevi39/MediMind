@@ -142,6 +142,17 @@ Your feedback is valued. Contributions, bug reports, or feature ideas are welcom
 - Email: [kajulurigayatridevi@gmail.com](kajulurigayatridevi@gmail.com)
 - [LinkedIn](https://www.linkedin.com/in/gayatri-devi-kajuluri/)
 
+---
+
+## ⚠️ Disclaimer
+
+MediMind is a **proof-of-concept academic project** developed for educational and research purposes only.  
+It is **not intended for clinical use**, diagnosis, or as a substitute for professional medical advice.  
+No real patient data is stored, shared, or used in the demo.  
+Compliance with regulations such as HIPAA, GDPR, or EMR standards is **not implemented** in this version.  
+Users and organizations should independently validate and ensure all regulatory requirements before real-world deployment.
+
+---
 
 
 
